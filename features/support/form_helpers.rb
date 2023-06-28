@@ -15,6 +15,18 @@ module FormHelpers
     end
   end
 
+  def javascript_to_simulate_paste(element_id, html_to_paste)
+    <<~JS
+      var event = new Event('paste')
+      event.clipboardData = {
+        getData: function() {
+          return '#{html_to_paste}'
+        }
+      }
+      document.getElementById('#{element_id}').dispatchEvent(event)
+    JS
+  end
+
   def clear_datetime(label)
     base_dom_id = find(:xpath, ".//label[contains(., '#{label}')]")["for"].gsub(/(_[1-5]i)$/, "")
 
