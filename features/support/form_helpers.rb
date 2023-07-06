@@ -15,12 +15,12 @@ module FormHelpers
     end
   end
 
-  def javascript_to_simulate_paste(element_id)
+  def javascript_to_simulate_paste(element_id, html_to_paste)
     <<~JS
       var event = new Event('paste')
       event.clipboardData = {
         getData: function() {
-          return '<h2>Benefits of following this advice</h2>'
+          return '#{html_to_paste}'
         }
       }
       document.getElementById('#{element_id}').dispatchEvent(event)

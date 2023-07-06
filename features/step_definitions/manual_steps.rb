@@ -673,12 +673,12 @@ end
 
 When(/^I paste HTML into the manual body$/) do
   fill_in_field("body", "")
-  page.execute_script(javascript_to_simulate_paste("manual_body"))
+  page.execute_script(javascript_to_simulate_paste("manual_body", "<h2>Benefits of following this advice</h2>"))
 end
 
 When(/^I paste HTML into the section body$/) do
   fill_in_field("section body", "")
-  page.execute_script(javascript_to_simulate_paste("section_body"))
+  page.execute_script(javascript_to_simulate_paste("section_body", "<h2>Benefits of following this advice</h2>"))
 end
 
 Then(/^the (manual|section) body field contains govspeak$/) do |content_type_name|
