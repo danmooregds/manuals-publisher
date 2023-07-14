@@ -1,16 +1,48 @@
 require "spec_helper"
 describe NavigationHelper, type: :helper do
   describe "#navigation_links_internal" do
-    it "returns a list of internal links" do
-      expect(navigation_links_internal).to be_an_instance_of(Array)
+    describe "before the what's new page expires" do
+      before do
+        travel_to Date.new(2023, 10, 31)
+      end
+
+      after do
+        travel_back
+      end
+
+      it "returns a list of internal links" do
+        expect(navigation_links_internal).to be_an_instance_of(Array)
+      end
+
+      it "includes a link to manuals" do
+        expect(navigation_links_internal).to include(a_hash_including(text: "Manuals", href: manuals_path))
+      end
+
+      it "includes a link to what's new" do
+        expect(navigation_links_internal).to include(a_hash_including(text: "What's new", href: whats_new_path))
+      end
     end
 
-    it "includes a link to manuals" do
-      expect(navigation_links_internal).to include(a_hash_including(text: "Manuals", href: manuals_path))
-    end
+    describe "once the what's new page expires" do
+      before do
+        travel_to Date.new(2023, 11, 1)
+      end
 
-    it "includes a link to what's new" do
-      expect(navigation_links_internal).to include(a_hash_including(text: "What's new", href: whats_new_path))
+      after do
+        travel_back
+      end
+
+      it "returns a list of internal links" do
+        expect(navigation_links_internal).to be_an_instance_of(Array)
+      end
+
+      it "includes a link to manuals" do
+        expect(navigation_links_internal).to include(a_hash_including(text: "Manuals", href: manuals_path))
+      end
+
+      it "does not include a link to what's new" do
+        expect(navigation_links_internal).not_to include(a_hash_including(text: "What's new", href: whats_new_path))
+      end
     end
 
     it "sets the link to the current page as active" do
